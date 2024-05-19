@@ -100,6 +100,57 @@ app.delete("/employees/:id", (req, res) => {
     });
 });
 
+
+// Endpoint to get department-wise employee information
+app.get("/departments/employees", (req, res) => {
+    const query = `
+        SELECT 
+            d.department_name,
+            e.employee_id,
+            e.first_name,
+            e.last_name,
+            e.email,
+            e.phone_number,
+            e.hire_date,
+            j.job_title
+        FROM 
+            departments d
+        LEFT JOIN 
+            employees e ON d.department_id = e.department_id
+        LEFT JOIN 
+            jobs j ON e.job_id = j.job_id
+        ORDER BY 
+            d.department_name, e.employee_id;
+    `;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching department-wise employee information:', err);
+            return res.status(500).json({ error: "An error occurred while fetching department-wise employee information." });
+        }
+
+        // Group employees by department
+        const departmentWiseInfo = results.reduce((acc, row) => {
+            if (!acc[row.department_name]) {
+                acc[row.department_name] = [];
+            }
+            acc[row.department_name].push({
+                employee_id: row.employee_id,
+                first_name: row.first_name,
+                last_name: row.last_name,
+                email: row.email,
+                phone_number: row.phone_number,
+                hire_date: row.hire_date,
+                job_title: row.job_title,
+                salary: row.salary
+            });
+            return acc;
+        }, {});
+
+        return res.json(departmentWiseInfo);
+    });
+});
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
