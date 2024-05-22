@@ -16,7 +16,7 @@ const Navbar = () => {
     return (
         <div className="w-[80%] ml-[20%] mt-[-17%] md:mt-[1%] lg:w-[100%] md:ml-[5%] md:w-[90%] lg:ml-[0] lg:mt-0 navbar md:pl-[45px] md:pr-[22px] nav-bg ">
             <div className="flex-1">
-                <h1 className="font-semibold text-[24px] text-[#646F75] dark:text-white">Logo</h1>
+                <h1 className="font-semibold text-[24px] text-[#646F75] dark:text-white"></h1>
             </div>
             <div className="flex-none gap-3">
                 <label className="cursor-pointer grid place-items-center">

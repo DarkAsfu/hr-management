@@ -1,9 +1,10 @@
 import express from 'express';
 import mysql from 'mysql';
-
+import cors from 'cors'
+// const cors = require('cors');
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -75,11 +76,18 @@ app.get("/employees/:id", (req, res) => {
 });
 
 app.post("/employees", (req, res) => {
+    console.log("Received POST request to /employees with body:", req.body); // Log the request body
     const q = "INSERT INTO employees SET ?";
     const values = req.body;
     db.query(q, values, (err, data) => {
-        if (err) return res.json(err);
-        return res.json("Employee added successfully.");
+        if (err) {
+            console.error('Error adding employee:', err); // Log any errors
+            return res.status(500).json(err); // Return the error response
+        }
+        return res.json({ 
+            dataInserted : true,
+            message: "Employee added successfully." 
+        });
     });
 });
 
@@ -147,10 +155,64 @@ app.get("/departments/employees", (req, res) => {
             return acc;
         }, {});
 
-        return res.json(departmentWiseInfo);
+        return res.json([departmentWiseInfo]);
+    });
+});
+// attendence
+app.get("/attendance", (req, res) => {
+    const q = "SELECT * FROM attendance";
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
     });
 });
 
+// Endpoint to get all employees with their attendance status for a specific date
+app.get("/attendance/employees/:date", (req, res) => {
+    const { date } = req.params;
+    const query = `
+        SELECT 
+            e.employee_id,
+            CONCAT(e.first_name, ' ', e.last_name) AS name,
+            IFNULL(a.status, 'not set') AS status
+        FROM 
+            employees e
+        LEFT JOIN 
+            attendance a ON e.employee_id = a.employee_id AND a.date = ?
+        ORDER BY 
+            e.employee_id;
+    `;
+
+    db.query(query, [date], (err, results) => {
+        if (err) {
+            console.error('Error fetching employee attendance information:', err);
+            return res.status(500).json({ error: "An error occurred while fetching employee attendance information." });
+        }
+
+        return res.json(results);
+    });
+});
+
+app.put("/attendance/employees/:id/:date", (req, res) => {
+    const { id, date } = req.params;
+    const { status } = req.body;
+    const formattedDate = new Date(date).toISOString().split('T')[0];
+
+    const query = `
+        INSERT INTO attendance (employee_id, date, status)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE status = VALUES(status);
+    `;
+
+    db.query(query, [id, formattedDate, status], (err, result) => {
+        if (err) {
+            console.error('Error updating employee attendance status:', err);
+            return res.status(500).json({ error: "An error occurred while updating employee attendance status." });
+        }
+
+        return res.json({ message: "Attendance status updated successfully." });
+    });
+});
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

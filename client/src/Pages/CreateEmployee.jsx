@@ -1,105 +1,108 @@
+import { useState } from 'react';
+import Swal from "sweetalert2";
+import useAllEmployees from '../hooks/useAllEmployees';
 const CreateEmployee = () => {
+    const [allemployees, loading, refetch] = useAllEmployees();
+    const [formData, setFormData] = useState({
+        // employee_id: `${allemployees.length+1}`,
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone_number: '',
+        hire_date: '',
+        job_id: '',
+        salary: '',
+        department_id: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(formData);
+        // Add form submission logic here
+        fetch('http://localhost:5000/employees', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Successfully created employee",
+                    icon: "success"
+                  });
+                refetch()
+            })
+    };
+
     return (
-        <div className="border md:mx-10 bg-white rounded-sm pb-10 md:mb-10 pt-10">
-            <div className="grid md:grid-cols-2 gap-4 w-10/12 mx-auto">
-                <div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Name: </h3>
-                        <input type="text" placeholder="Type here" className="input input-sm input-bordered w-full" />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Email: </h3>
-                        <input type="email" placeholder="Type here" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Password: </h3>
-                        <input type="password" placeholder="Type here" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Placeholder: </h3>
-                        <input type="text" placeholder="Placeholder" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Text area: </h3>
-                        <textarea name="" id="" cols="" rows="" className="border rounded-md w-full h-32"></textarea>
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Randomly: </h3>
-                        <input type="number" placeholder="Randonly value"
-                            className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Disabled: </h3>
-                        <input type="text" placeholder="Disabled" className="input input-sm input-bordered w-full "
-                            disabled />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Static control: </h3>
-                        <input type="text" placeholder="email@example.com"
-                            readOnly
-                            className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Helping text: </h3>
-                        <input type="text" placeholder="Placeholder" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Select input: </h3>
-                        <select className="select select-bordered w-full">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
+        <div className="md:w-7/12 mx-auto mt-10 px-2">
+            <form onSubmit={handleSubmit} className="bg-white p-8 shadow-md rounded-lg ">
+                <h2 className="text-2xl font-bold mb-6 text-gray-800">Create Employee</h2>
+                <div className='grid md:grid-cols-2 gap-5'>
+                    {['first_name', 'last_name', 'email', 'phone_number', 'hire_date', 'salary'].map((field) => (
+                        <div key={field} className="">
+                            {/* <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={field}>
+                                {field.replace('_', ' ').toUpperCase()}
+                            </label> */}
+                            <input
+                                type={field === 'hire_date' ? 'date' : 'text'}
+                                id={field}
+                                name={field}
+                                value={formData[field]}
+                                placeholder={`${field.replace('_', ' ').toLocaleLowerCase()}`}
+                                onChange={handleChange}
+                                required
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            />
+                        </div>
+                    ))}
+                    <div className="mb-4">
+                        {/* <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="job_id">Job Title</label> */}
+                        <select
+                            id="job_id"
+                            name="job_id"
+                            value={formData.job_id}
+                            onChange={handleChange}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option value="">Select Job Title</option>
+                            <option value="1">HR Manager</option>
+                            <option value="2">Software Developer</option>
+                            <option value="3">Developer</option>
                         </select>
                     </div>
+                    <div className="mb-4">
+                        {/* <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="department">Department</label> */}
+                        <select
+                            id="department_id"
+                            name="department_id"
+                            value={formData.department_id}
+                            onChange={handleChange}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option value="">Select Department</option>
+                            <option value="2">Engineering</option>
+                            <option value="1">Human Resources</option>
+                            <option value="3">IT Department</option>
+                        </select>
+                    </div>
+                    <button
+                        type="submit"
+                        className="btn-md w-36 bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Submit
+                    </button>
                 </div>
-                <div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Default file input: </h3>
-                        <input type="file" placeholder="Type here" className="w-full border" />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Date: </h3>
-                        <input type="date" placeholder="Type here" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Month: </h3>
-                        <input type="month" placeholder="Type here" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Time: </h3>
-                        <input type="time" placeholder="Placeholder" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Week: </h3>
-                        <input type="week" placeholder="d" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Number: </h3>
-                        <input type="number" placeholder="" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">URL: </h3>
-                        <input type="url" placeholder="" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Search: </h3>
-                        <input type="search" placeholder="" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Tel: </h3>
-                        <input type="tel" placeholder="" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Color: </h3>
-                        <input type="color" placeholder="" className="input input-sm input-bordered w-full " />
-                    </div>
-                    <div className="md:flex items-center gap-3 mt-7">
-                        <h3 className="font-bold text-[14px] text-[#4B4B5A] w-[20%]">Range: </h3>
-                        <input type="range"
-                            placeholder="" className="input input-sm w-full bg-[#f2f2f2] h-2" />
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
     );
 };
