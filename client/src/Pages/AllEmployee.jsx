@@ -1,6 +1,7 @@
 import useAllEmployees from '../hooks/useAllEmployees';
 import { useState } from 'react';
 import { ImCross } from "react-icons/im";
+import { Link } from 'react-router-dom';
 const AllEmployee = () => {
     const [allemployees, loading, refetch] = useAllEmployees();
     const [sEmployee, setSEmployee] = useState();
@@ -12,7 +13,7 @@ const AllEmployee = () => {
     }
     return (
         <div>
-            <div className="md:w-10/12 w-[95%] mx-auto bg-white dark:bg-[#080808] shadow-lg rounded-md border border-gray-200 dark:border-[#222]">
+            <div className="md:w-10/12 w-[95%] mx-auto bg-white dark:bg-[#080808] mb-6 shadow-lg rounded-md border border-gray-200 dark:border-[#222]">
                 <div className="p-3">
                     <div className="overflow-x-auto">
                         <table className="table-auto w-full">
@@ -35,6 +36,9 @@ const AllEmployee = () => {
                                     </th>
                                     <th className="p-2 whitespace-nowrap">
                                         <div className="font-semibold text-center">Details</div>
+                                    </th>
+                                    <th className="p-2 whitespace-nowrap">
+                                        <div className="font-semibold text-center">Action</div>
                                     </th>
                                 </tr>
                             </thead>
@@ -59,9 +63,8 @@ const AllEmployee = () => {
                                             <td className="p-2 whitespace-nowrap">
                                                 <div className="text-center text-[16px]  text-gray-800 dark:text-white">{e?.salary}</div>
                                             </td>
-
-                                            <td className="p-2 whitespace-nowrap">{/* The button to open modal */}
-                                                <button className='text-blue-500 bg-blue-100 p-2 rounded-lg' onClick={() => employeeDetails(e.employee_id)}>Details</button>
+                                            <td className="p-2 whitespace-nowrap flex justify-center">{/* The button to open modal */}
+                                                <button className='text-blue-500 bg-blue-100 p-2 rounded-lg text-center' onClick={() => employeeDetails(e.employee_id)}>Details</button>
                                                 <dialog id="employee_details" className="modal modal-bottom sm:modal-middle">
                                                     <div className="modal-box">
                                                         <div className="modal-action -mb-12 mr-4">
@@ -81,6 +84,11 @@ const AllEmployee = () => {
 
                                                     </div>
                                                 </dialog>
+                                            </td>
+                                            <td className="p-2 whitespace-nowrap">
+                                                <div className="text-center text-[14px]  text-gray-800 dark:text-white">
+                                                    <Link to={`/updateEmployee/${e.employee_id}`} className='text-blue-500 border border-blue-500 hover:bg-blue-100 hover:border-blue-100 transition-all p-2 rounded-lg text-center'>Update</Link>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))

@@ -90,7 +90,7 @@ app.post("/employees", (req, res) => {
         });
     });
 });
-
+// todo
 app.put("/employees/:id", (req, res) => {
     const q = "UPDATE employees SET ? WHERE employee_id = ?";
     const values = [req.body, req.params.id];
@@ -99,7 +99,7 @@ app.put("/employees/:id", (req, res) => {
         return res.json("Employee updated successfully.");
     });
 });
-
+// todo
 app.delete("/employees/:id", (req, res) => {
     const q = "DELETE FROM employees WHERE employee_id = ?";
     db.query(q, [req.params.id], (err, data) => {
@@ -211,6 +211,43 @@ app.put("/attendance/employees/:id/:date", (req, res) => {
         }
 
         return res.json({ message: "Attendance status updated successfully." });
+    });
+});
+app.get("/users", (req, res) =>{
+    const q = "Select * from users";
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+})
+app.post('/users', (req, res) => {
+    const user = req.body;
+    console.log(user.email);
+
+    // Check if the user already exists
+    db.query('SELECT * FROM users WHERE email = ?', [user.email], (err, results) => {
+        if (err) {
+            console.error('Error checking existing user:', err);
+            return res.status(500).json(err);
+        }
+
+        if (results.length > 0) {
+            console.log({ message: 'user already exists' });
+            return res.send({ message: 'user already exists' });
+        }
+
+        // Insert the new user
+        db.query('INSERT INTO users SET ?', user, (err, result) => {
+            if (err) {
+                console.error('Error adding user:', err);
+                return res.status(500).json(err);
+            }
+            res.send({
+                dataInserted: true,
+                message: 'user added successfully.',
+                result: result
+            });
+        });
     });
 });
 // Start the server

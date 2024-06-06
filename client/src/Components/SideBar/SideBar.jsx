@@ -4,6 +4,7 @@ import { GoPerson } from "react-icons/go";
 import { FaHistory } from "react-icons/fa";
 import { IoCreate, IoSettingsOutline } from "react-icons/io5";
 import { IoPersonAddOutline } from "react-icons/io5";
+import { PiSignInBold } from "react-icons/pi";
 import { GoHome } from "react-icons/go";
 import logoLight from "../../assets/logo-light.png";
 import logoDark from "../../assets/logo-dark.png";
@@ -36,7 +37,7 @@ const SideBar = () => {
         <div className="drawer md:drawer-open">
             {/* Drawer content */}
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content dark:bg-[#222831] bg-[#f2f2f2] pt-2">
+            <div className="drawer-content dark:bg-[#201f1f] bg-[#f2f2f28a] pt-2">
                 {/* Hamburger icon for mobile */}
                 <label htmlFor="my-drawer-2" className="md:hidden">
                     <img onClick={showSideBar} className={`w-10 m-2`} src={humberger} alt="" />
@@ -85,6 +86,9 @@ const SideBar = () => {
                     </p>
                     <p className={`text-[16px] dark:text-white mt-5 font-mono ${changeLogo ? '' : 'mx-auto'}`}>
                         <a style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}}><IoSettingsOutline className="text-[32px]" /><span className={`${hideText}`}>Settings</span></a>
+                    </p>
+                    <p className={`text-[16px] dark:text-white mt-5 font-mono ${changeLogo ? '' : 'mx-auto'}`}>
+                        <Link to='/signin' style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}}><PiSignInBold className="text-[32px]" /><span className={`${hideText}`}>Sign In</span></Link>
                     </p>
                 </ul>
             </div>

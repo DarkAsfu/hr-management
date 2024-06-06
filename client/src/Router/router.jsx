@@ -4,20 +4,24 @@ import DashboardHome from "../Components/DashboardHome/DashboardHome";
 import AllEmployee from "../Pages/AllEmployee";
 import SingleEmployee from "../Pages/SingleEmployee";
 import CreateEmployee from "../Pages/CreateEmployee";
+import Signin from "../Components/Signin/Signin";
+import Signup from "../Components/Signup/Signup";
+import PrivateRouter from "./PrivateRouter";
+import UpdateEmployee from "../Pages/UpdateEmployee";
 // import Validation from "../Pages/Validation";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Dashboard/>,
+        element:<Dashboard/>,
         children: [
             {
                 path: "/",
-                element: <DashboardHome/>
+                element: <PrivateRouter><DashboardHome/></PrivateRouter>
             },
             {   
                 path: "/allemployee",
-                element: <AllEmployee/>
+                element: <PrivateRouter><AllEmployee/></PrivateRouter>
             },
             {
                 path: "/employee/:id",
@@ -26,8 +30,12 @@ const router = createBrowserRouter([
             },
             {
                 path: "/createEmployee",
-                element: <CreateEmployee/>
-            }
+                element: <PrivateRouter><CreateEmployee/></PrivateRouter>
+            },
+            {
+                path: "/updateEmployee/:id",
+                element: <UpdateEmployee/>
+            },
             // {
             //     path: "/updateEmployee",
             //     element: <CreateEmployee/>
@@ -36,8 +44,17 @@ const router = createBrowserRouter([
             //     path: "/employeeValidation",
             //     element: <Validation/>
             // }
+            {
+                path: '/signin',
+                element: <Signin/>
+            },
+            {
+                path: '/signup',
+                element: <Signup/>
+            }
         ]
     },
+    
 ]);
 
 export default router;
