@@ -191,12 +191,15 @@ app.get("/attendance/employees/:date", (req, res) => {
     const query = `
         SELECT 
             e.employee_id,
+            j.job_title,
             CONCAT(e.first_name, ' ', e.last_name) AS name,
             IFNULL(a.status, 'not set') AS status
         FROM 
             employees e
         LEFT JOIN 
             attendance a ON e.employee_id = a.employee_id AND a.date = ?
+        LEFT JOIN 
+            jobs j ON e.job_id = j.job_id
         ORDER BY 
             e.employee_id;
     `;
@@ -211,18 +214,21 @@ app.get("/attendance/employees/:date", (req, res) => {
     });
 });
 
-app.put("/attendance/employees/:id/:date", (req, res) => {
-    const { id, date } = req.params;
-    const { status } = req.body;
+
+app.put("/attendance/employees/:date", (req, res) => {
+    const { date } = req.params;
+    const attendanceUpdates = req.body.attendance; // Expecting an array of { employee_id, status }
     const formattedDate = new Date(date).toISOString().split('T')[0];
 
     const query = `
         INSERT INTO attendance (employee_id, date, status)
-        VALUES (?, ?, ?)
+        VALUES ?
         ON DUPLICATE KEY UPDATE status = VALUES(status);
     `;
 
-    db.query(query, [id, formattedDate, status], (err, result) => {
+    const values = attendanceUpdates.map(a => [a.employee_id, formattedDate, a.status]);
+
+    db.query(query, [values], (err, result) => {
         if (err) {
             console.error('Error updating employee attendance status:', err);
             return res.status(500).json({ error: "An error occurred while updating employee attendance status." });
@@ -231,6 +237,7 @@ app.put("/attendance/employees/:id/:date", (req, res) => {
         return res.json({ message: "Attendance status updated successfully." });
     });
 });
+
 app.get("/users", (req, res) => {
     const q = "Select * from users";
     db.query(q, (err, data) => {

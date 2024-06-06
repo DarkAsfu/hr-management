@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { GoPerson } from "react-icons/go";
 import { FaHistory } from "react-icons/fa";
 import { IoCreate, IoSettingsOutline } from "react-icons/io5";
+import { BsClipboardCheck } from "react-icons/bs";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { PiSignInBold } from "react-icons/pi";
 import { GoHome } from "react-icons/go";
@@ -77,6 +78,9 @@ const SideBar = () => {
                             <IoPersonAddOutline className="text-[32px]" />
                             <span className={`${hideText}`}>Create Employee</span>
                         </Link>
+                    </p>
+                    <p className={`text-[16px] dark:text-white mt-5 font-mono ${changeLogo ? '' : 'mx-auto'}`}>
+                        <Link to="/attendance" style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}} className={isActiveLink("/attendance") ? "text-[#5369F8]" : ""}><BsClipboardCheck className="text-[32px]" /><span className={`${hideText}`}>Take Attendance</span></Link>
                     </p>
                     <p className={`text-[16px] dark:text-white mt-5 font-mono ${changeLogo ? '' : 'mx-auto'}`}>
                         <Link to="/updateEmployee" style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}} className={isActiveLink("/updateEmployee") ? "text-[#5369F8]" : ""}><IoCreate className="text-[32px]" /><span className={`${hideText}`}>Update Employee</span></Link>

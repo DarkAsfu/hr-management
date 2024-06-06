@@ -8,6 +8,7 @@ import Signin from "../Components/Signin/Signin";
 import Signup from "../Components/Signup/Signup";
 import PrivateRouter from "./PrivateRouter";
 import UpdateEmployee from "../Pages/UpdateEmployee";
+import Attendance from "../Pages/Attendance";
 // import Validation from "../Pages/Validation";
 
 const router = createBrowserRouter([
@@ -36,14 +37,10 @@ const router = createBrowserRouter([
                 path: "/updateEmployee/:id",
                 element: <UpdateEmployee/>
             },
-            // {
-            //     path: "/updateEmployee",
-            //     element: <CreateEmployee/>
-            // },
-            // {
-            //     path: "/employeeValidation",
-            //     element: <Validation/>
-            // }
+            {
+                path: "/attendance",
+                element: <Attendance/>
+            },
             {
                 path: '/signin',
                 element: <Signin/>
