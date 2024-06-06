@@ -37,7 +37,7 @@ const Signup = () => {
     }
     return (
         <>
-        <div className="w-10/12 mx-auto text-center flex justify-center mb-10 mt-24">
+        <div className="w-10/12 mx-auto text-center flex justify-center mb-10 mt-10">
             <div className="card flex-shrink-0 w-full max-w-sm shadow-lg bg-base-100">
                 <div className="card-body">
                     <h1 className="text-2xl font-bold text-black text-center">Register Now</h1>

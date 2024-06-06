@@ -86,6 +86,7 @@ const Attendance = () => {
                 <p>Loading...</p>
             ) : (
                 <form onSubmit={handleSubmit}>
+                    <div className='overflow-x-auto'>
                     <table className="table-auto w-full">
                         <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50 ">
                             <tr>
@@ -154,6 +155,7 @@ const Attendance = () => {
                             }
                         </tbody>
                     </table>
+                    </div>
                     <div className='flex justify-end mt-10'>
                         <button type="submit" className='bg-blue-400 btn text-white hover:bg-blue-100 hover:text-blue-500'>Save Attendance</button>
                     </div>

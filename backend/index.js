@@ -194,32 +194,38 @@ app.get("/attendance", (req, res) => {
     });
 });
 
-// Endpoint to get all employees with their attendance status for a specific date
 app.get("/attendance/employees/:date", (req, res) => {
-    const { date } = req.params;
-    const query = `
-        SELECT 
+    const date = req.params.date;
+    const q = `
+        SELECT
             e.employee_id,
             j.job_title,
             CONCAT(e.first_name, ' ', e.last_name) AS name,
             IFNULL(a.status, 'not set') AS status
-        FROM 
+        FROM
             employees e
         LEFT JOIN 
-            attendance a ON e.employee_id = a.employee_id AND a.date = ?
-        LEFT JOIN 
             jobs j ON e.job_id = j.job_id
+        LEFT JOIN 
+            (SELECT a1.employee_id, a1.status
+             FROM attendance a1
+             INNER JOIN 
+                 (SELECT employee_id, MAX(attendance_id) AS max_attendance_id
+                  FROM attendance
+                  WHERE date = ?
+                  GROUP BY employee_id) a2
+             ON a1.employee_id = a2.employee_id AND a1.attendance_id = a2.max_attendance_id
+             WHERE a1.date = ?) a ON e.employee_id = a.employee_id
         ORDER BY 
             e.employee_id;
     `;
 
-    db.query(query, [date], (err, results) => {
+    db.query(q, [date, date], (err, data) => {
         if (err) {
-            console.error('Error fetching employee attendance information:', err);
-            return res.status(500).json({ error: "An error occurred while fetching employee attendance information." });
+            console.error('Error fetching attendance:', err);
+            return res.status(500).json(err);
         }
-
-        return res.json(results);
+        return res.json(data);
     });
 });
 

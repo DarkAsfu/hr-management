@@ -39,7 +39,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/attendance",
-                element: <Attendance/>
+                element: <PrivateRouter><Attendance/></PrivateRouter>
             },
             {
                 path: '/signin',
