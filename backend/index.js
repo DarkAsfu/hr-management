@@ -86,9 +86,9 @@ app.post("/employees", (req, res) => {
             console.error('Error adding employee:', err); // Log any errors
             return res.status(500).json(err); // Return the error response
         }
-        return res.json({ 
-            dataInserted : true,
-            message: "Employee added successfully." 
+        return res.json({
+            dataInserted: true,
+            message: "Employee added successfully."
         });
     });
 });
@@ -119,7 +119,10 @@ app.delete("/employees/:id", (req, res) => {
     const q = "DELETE FROM employees WHERE employee_id = ?";
     db.query(q, [req.params.id], (err, data) => {
         if (err) return res.json(err);
-        return res.json("Employee deleted successfully.");
+        return res.json({
+            deletedCount: 1,
+            message: "Employee deleted successfully."
+        });
     });
 });
 
@@ -228,7 +231,7 @@ app.put("/attendance/employees/:id/:date", (req, res) => {
         return res.json({ message: "Attendance status updated successfully." });
     });
 });
-app.get("/users", (req, res) =>{
+app.get("/users", (req, res) => {
     const q = "Select * from users";
     db.query(q, (err, data) => {
         if (err) return res.json(err);

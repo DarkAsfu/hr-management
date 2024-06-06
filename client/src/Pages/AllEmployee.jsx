@@ -1,7 +1,9 @@
 import useAllEmployees from '../hooks/useAllEmployees';
 import { useState } from 'react';
+import { FaRegTrashCan } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 const AllEmployee = () => {
     const [allemployees, loading, refetch] = useAllEmployees();
     const [sEmployee, setSEmployee] = useState();
@@ -10,6 +12,35 @@ const AllEmployee = () => {
         fetch(`http://localhost:5000/employees/${id}`)
             .then(res => res.json())
             .then(data => setSEmployee(data))
+    }
+    const employeeDelete = (id) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:5000/employees/${id}`, {
+                    method: 'DELETE'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.deletedCount > 0) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Employee has been deleted.',
+                                'success'
+                            )
+                            refetch();
+                        }
+                    })
+            }
+        })
     }
     return (
         <div>
@@ -39,6 +70,9 @@ const AllEmployee = () => {
                                     </th>
                                     <th className="p-2 whitespace-nowrap">
                                         <div className="font-semibold text-center">Action</div>
+                                    </th>
+                                    <th className="p-2 whitespace-nowrap">
+                                        <div className="font-semibold text-center">Delete</div>
                                     </th>
                                 </tr>
                             </thead>
@@ -88,6 +122,11 @@ const AllEmployee = () => {
                                             <td className="p-2 whitespace-nowrap">
                                                 <div className="text-center text-[14px]  text-gray-800 dark:text-white">
                                                     <Link to={`/updateEmployee/${e.employee_id}`} className='text-blue-500 border border-blue-500 hover:bg-blue-100 hover:border-blue-100 transition-all p-2 rounded-lg text-center'>Update</Link>
+                                                </div>
+                                            </td>
+                                            <td className="p-2 whitespace-nowrap">
+                                                <div className="text-center text-[14px]  text-gray-800 dark:text-white">
+                                                    <Link onClick={() => employeeDelete(e.employee_id)} className="flex justify-center text-xl text-blue-400"><FaRegTrashCan /></Link>
                                                 </div>
                                             </td>
                                         </tr>
