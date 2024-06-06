@@ -48,6 +48,8 @@ app.get("/employees/:id", (req, res) => {
             e.phone_number,
             e.hire_date,
             e.salary,
+            e.department_id,
+            e.job_id,
             j.job_title,
             d.department_name
         FROM 
@@ -91,14 +93,27 @@ app.post("/employees", (req, res) => {
     });
 });
 // todo
-app.put("/employees/:id", (req, res) => {
+app.patch("/employees/:id", (req, res) => {
+    const employeeId = req.params.id;
+    const updatedData = req.body;
+
+    if (!employeeId || !updatedData) {
+        return res.status(400).json({ error: "Invalid request data" });
+    }
+
     const q = "UPDATE employees SET ? WHERE employee_id = ?";
-    const values = [req.body, req.params.id];
+    const values = [updatedData, employeeId];
+
     db.query(q, values, (err, data) => {
-        if (err) return res.json(err);
-        return res.json("Employee updated successfully.");
+        if (err) {
+            console.error('Error updating employee:', err);
+            return res.status(500).json({ error: "Failed to update employee" });
+        }
+        return res.json({ message: "Employee updated successfully" });
     });
 });
+
+
 // todo
 app.delete("/employees/:id", (req, res) => {
     const q = "DELETE FROM employees WHERE employee_id = ?";
