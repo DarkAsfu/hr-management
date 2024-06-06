@@ -116,18 +116,27 @@ app.patch("/employees/:id", (req, res) => {
 
 // todo
 app.delete("/employees/:id", (req, res) => {
-    const q = "DELETE FROM employees WHERE employee_id = ?";
-    db.query(q, [req.params.id], (err, data) => {
-        if (err) return res.json(err);
-        return res.json({
-            deletedCount: 1,
-            message: "Employee deleted successfully."
+    const { id } = req.params;
+    const deleteAttendanceQuery = "DELETE FROM attendance WHERE employee_id = ?";
+    db.query(deleteAttendanceQuery, [id], (err, attendanceData) => {
+        if (err) {
+            console.error('Error deleting attendance records:', err);
+            return res.status(500).json(err);
+        }
+        const deleteEmployeeQuery = "DELETE FROM employees WHERE employee_id = ?";
+        db.query(deleteEmployeeQuery, [id], (err, employeeData) => {
+            if (err) {
+                console.error('Error deleting employee:', err);
+                return res.status(500).json(err);
+            }
+            return res.json({
+                deletedCount: 1,
+                message: "Employee deleted successfully."
+            });
         });
     });
 });
 
-
-// Endpoint to get department-wise employee information
 app.get("/departments/employees", (req, res) => {
     const query = `
         SELECT 

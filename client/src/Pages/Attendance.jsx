@@ -78,7 +78,7 @@ const Attendance = () => {
                 <h1 className='text-[16px] font-semibold dark:text-white'>Employee Attendance</h1>
                 <div className="date-picker text-[16px] dark:text-white">
                     <label>Select Date: </label>
-                    <input className='dark:bg-[#444] px-2 py-1 rounded-lg' type="date" value={date} onChange={handleDateChange} />
+                    <input className='dark:bg-[#444] bg-[#f2efef] px-2 py-1 rounded-lg' type="date" value={date} onChange={handleDateChange} />
                 </div>
             </div>
 
