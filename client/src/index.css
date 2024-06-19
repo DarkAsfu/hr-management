@@ -2,3 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+.react-tabs__tab--selected{
+    background-color: rgb(17, 112, 190) !important;
+    border-radius: 25px !important;
+    color: #fff !important;
+}

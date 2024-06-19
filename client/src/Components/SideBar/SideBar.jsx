@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { GoPerson } from "react-icons/go";
-import { FaHistory } from "react-icons/fa";
-import { IoCreate, IoSettingsOutline } from "react-icons/io5";
+import { LuBuilding } from "react-icons/lu";
 import { BsClipboardCheck } from "react-icons/bs";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { PiSignInBold } from "react-icons/pi";
@@ -53,8 +52,10 @@ const SideBar = () => {
                     <div className="flex justify-between gap-8 mx-auto mt-2">
                         {changeLogo ?
                             <div className="flex items-center gap-4 text-[24px] font-bold">
-                                <div className="dark:hidden"><img src={logoDark} className="w-32" alt="logo" /></div>
-                                <div className="hidden dark:block"><img src={logoLight} className="w-32" alt="logo" /></div>
+                                {/* <div className="dark:hidden"><img src={logoDark} className="w-32" alt="logo" /></div> */}
+                                {/* <div className="hidden dark:block"><img src={logoLight} className="w-32" alt="logo" /></div> */}
+                                <h1 className="text-[20px] uppercase dark:hidden"><span className="text-blue-500">HR</span>Management</h1>
+                                <h1 className="text-[20px] uppercase hidden dark:block text-white"><span className="text-blue-500">HR</span>Management</h1>
                             </div> :
                             <img onClick={showSideBar} className={`w-10 mx-auto bg-none`} src={humberger} alt="" />
                         }
@@ -83,16 +84,10 @@ const SideBar = () => {
                         <Link to="/attendance" style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}} className={isActiveLink("/attendance") ? "text-[#5369F8]" : ""}><BsClipboardCheck className="text-[32px]" /><span className={`${hideText}`}>Take Attendance</span></Link>
                     </p>
                     <p className={`text-[16px] dark:text-white mt-5 font-mono ${changeLogo ? '' : 'mx-auto'}`}>
-                        <Link to="/updateEmployee" style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}} className={isActiveLink("/updateEmployee") ? "text-[#5369F8]" : ""}><IoCreate className="text-[32px]" /><span className={`${hideText}`}>Update Employee</span></Link>
+                        <Link to="/departmentWiseEmployee" style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}} className={isActiveLink("/departmentWiseEmployee") ? "text-[#5369F8]" : ""}><LuBuilding className="text-[32px]" /><span className={`${hideText}`}>Department Wise</span></Link>
                     </p>
                     <p className={`text-[16px] dark:text-white mt-5 font-mono ${changeLogo ? '' : 'mx-auto'}`}>
-                        <Link to="/employeeValidation" style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}} className={isActiveLink("/employeeValidation") ? "text-[#5369F8]" : ""}><FaHistory className="text-[32px]" /><span className={`${hideText}`}>User Validation</span></Link>
-                    </p>
-                    <p className={`text-[16px] dark:text-white mt-5 font-mono ${changeLogo ? '' : 'mx-auto'}`}>
-                        <a style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}}><IoSettingsOutline className="text-[32px]" /><span className={`${hideText}`}>Settings</span></a>
-                    </p>
-                    <p className={`text-[16px] dark:text-white mt-5 font-mono ${changeLogo ? '' : 'mx-auto'}`}>
-                        <Link to='/signin' style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}}><PiSignInBold className="text-[32px]" /><span className={`${hideText}`}>Sign In</span></Link>
+                        <Link to='/signin' style={{display: "flex", alignItems: "center", gap: 7, padding: "0px 20px"}} className={isActiveLink("/signin") ? "text-[#5369F8]" : ""} ><PiSignInBold className="text-[32px]" /><span className={`${hideText}`}>Sign In</span></Link>
                     </p>
                 </ul>
             </div>

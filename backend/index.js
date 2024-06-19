@@ -290,6 +290,55 @@ app.post('/users', (req, res) => {
         });
     });
 });
+app.get("/statistics", (req, res) => {
+    const employeeCountQuery = "SELECT COUNT(*) AS employee_count FROM employees";
+    const departmentCountQuery = "SELECT COUNT(*) AS department_count FROM departments";
+    const jobCountQuery = "SELECT COUNT(*) AS job_count FROM jobs";
+    const departmentWiseEmployeeCountQuery = `
+        SELECT d.department_name, COUNT(e.employee_id) AS employee_count
+        FROM departments d
+        LEFT JOIN employees e ON d.department_id = e.department_id
+        GROUP BY d.department_name;
+    `;
+
+    db.query(employeeCountQuery, (err, employeeData) => {
+        if (err) {
+            console.error('Error fetching employee count:', err);
+            return res.status(500).json(err);
+        }
+
+        db.query(departmentCountQuery, (err, departmentData) => {
+            if (err) {
+                console.error('Error fetching department count:', err);
+                return res.status(500).json(err);
+            }
+
+            db.query(jobCountQuery, (err, jobData) => {
+                if (err) {
+                    console.error('Error fetching job count:', err);
+                    return res.status(500).json(err);
+                }
+
+                db.query(departmentWiseEmployeeCountQuery, (err, departmentWiseData) => {
+                    if (err) {
+                        console.error('Error fetching department-wise employee count:', err);
+                        return res.status(500).json(err);
+                    }
+
+                    const statistics = {
+                        employee_count: employeeData[0].employee_count,
+                        department_count: departmentData[0].department_count,
+                        job_count: jobData[0].job_count,
+                        department_wise_employee_count: departmentWiseData
+                    };
+
+                    return res.json(statistics);
+                });
+            });
+        });
+    });
+});
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

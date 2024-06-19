@@ -9,6 +9,8 @@ import Signup from "../Components/Signup/Signup";
 import PrivateRouter from "./PrivateRouter";
 import UpdateEmployee from "../Pages/UpdateEmployee";
 import Attendance from "../Pages/Attendance";
+import Profile from "../Components/Profile/Profile";
+import DepartmentWiseEmployee from "../Pages/DepartmentWiseEmployee";
 // import Validation from "../Pages/Validation";
 
 const router = createBrowserRouter([
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
             {
                 path: "/attendance",
                 element: <PrivateRouter><Attendance/></PrivateRouter>
+            },
+            {
+                path: "/departmentWiseEmployee",
+                element: <DepartmentWiseEmployee/>
+            },
+            {
+                path: "/profile",
+                element: <PrivateRouter><Profile/></PrivateRouter>
             },
             {
                 path: '/signin',

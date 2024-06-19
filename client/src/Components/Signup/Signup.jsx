@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Social from "../Social/Social";
 const Signup = () => {
-    const {createUser} = useContext(AuthContext);
+    const {createUser, updateInfo} = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/"
@@ -13,21 +13,17 @@ const Signup = () => {
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
-        const user = {
-            name,
-            email
-        }
-        console.log(user);
         createUser(email, password)
         .then(result => {
             const loggedUser = result.user;
-            console.log(loggedUser);
+            updateInfo(name);
+            const saveUser = {name, email: loggedUser.email};
             fetch('http://localhost:5000/users', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(user)
+                body: JSON.stringify(saveUser)
             })
             navigate(from, { replace: true });
         })
