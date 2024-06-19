@@ -91,6 +91,16 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Contact
 For any inquiries or feedback, please contact [ashraful.islam0871@gmail.com](mailto:ashraful.islam0871@gmail.com).
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/ef0edd4d-f8d3-42b8-bb8d-cf91d39d2741)
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/fce8af24-730e-4e5d-bf74-93aa33b6bb3d)
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/b3cde43a-b2e6-4067-97d3-1e793045c9ee)
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/b54f3b81-d231-4313-b9fe-672a2be42fac)
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/5848c292-e499-4eb2-a68d-bf1ab101e697)
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/3760e03b-0250-4cbb-b7c8-36ce42018dce)
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/910d96d3-e508-49af-a0ae-818b1d8f0981)
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/0f86bd36-0630-409b-b5b5-041eb296853e)
+![image](https://github.com/DarkAsfu/hr-management/assets/121676628/3d60304f-9b25-4575-a15a-f61bfebc6401)
+
 
 ---
 
